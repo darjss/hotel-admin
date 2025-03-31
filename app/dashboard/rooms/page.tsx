@@ -2,117 +2,16 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Eye, Info, MoreHorizontal, Plus, Search, SlidersHorizontal } from "lucide-react"
+import { Eye, Info, MoreHorizontal, Pencil, Plus, Search, SlidersHorizontal, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-// Mock data for rooms
-const rooms = [
-  {
-    id: 1,
-    roomNumber: "231",
-    roomType: "Deluxe twin",
-    floor: "Д-31",
-    bedType: "Twin bed",
-    capacity: 2,
-    status: { label: "Бохир", color: "#dc3545" },
-    amenities: "Queen Size, Шүршүүр, Жакуз",
-  },
-  {
-    id: 2,
-    roomNumber: "100",
-    roomType: "Superior twin",
-    floor: "Д-02",
-    bedType: "Twin bed",
-    capacity: 2,
-    status: { label: "Бэлэн", color: "#198754" },
-    amenities: "Жакуз, Шүршүүр, Mini-Bar",
-  },
-  {
-    id: 3,
-    roomNumber: "101",
-    roomType: "Executive suite",
-    floor: "Д-01",
-    bedType: "King size bed",
-    capacity: 4,
-    status: { label: "Хүлээгдэж", color: "#0d6efd" },
-    amenities: "Double Bed, Жакуз, Шүршүүр",
-  },
-  {
-    id: 4,
-    roomNumber: "101",
-    roomType: "Executive suite",
-    floor: "Д-01",
-    bedType: "King size bed",
-    capacity: 4,
-    status: { label: "Хүлээгдэж", color: "#0d6efd" },
-    amenities: "Double Bed, Жакуз, Шүршүүр",
-  },
-  {
-    id: 5,
-    roomNumber: "675",
-    roomType: "Standard Double",
-    floor: "Д-02",
-    bedType: "Queen size bed",
-    capacity: 2,
-    status: { label: "Захиалсан", color: "#ffc107" },
-    amenities: "Double Bed, Жакуз, Шүршүүр",
-  },
-  {
-    id: 6,
-    roomNumber: "2",
-    roomType: "Comfort Single",
-    floor: "Д-04",
-    bedType: "Twin bed",
-    capacity: 2,
-    status: { label: "Бөр төлөв", color: "#0dcaf0" },
-    amenities: "Single Bed, Шүршүүр",
-  },
-  {
-    id: 7,
-    roomNumber: "231",
-    roomType: "Deluxe suite",
-    floor: "Д-31",
-    bedType: "Queen size bed",
-    capacity: 3,
-    status: { label: "Бохир", color: "#dc3545" },
-    amenities: "Queen Size, Шүршүүр",
-  },
-  {
-    id: 8,
-    roomNumber: "100",
-    roomType: "Comfort Single",
-    floor: "Д-02",
-    bedType: "Twin bed",
-    capacity: 2,
-    status: { label: "Бэлэн", color: "#198754" },
-    amenities: "Жакуз, Шүршүүр, Mini-Bar",
-  },
-  {
-    id: 9,
-    roomNumber: "231",
-    roomType: "Deluxe king",
-    floor: "Д-31",
-    bedType: "Twin bed",
-    capacity: 2,
-    status: { label: "Бохир", color: "#dc3545" },
-    amenities: "Queen Size, Шүршүүр",
-  },
-  {
-    id: 10,
-    roomNumber: "675",
-    roomType: "Superior king",
-    floor: "Д-02",
-    bedType: "Twin bed",
-    capacity: 2,
-    status: { label: "Захиалсан", color: "#ffc107" },
-    amenities: "Double Bed, Жакуз, Шүршүүр",
-  },
-]
+import { rooms } from "@/utils/data"
 
 export default function RoomsPage() {
   const [activeTab, setActiveTab] = useState("all")
@@ -272,9 +171,30 @@ export default function RoomsPage() {
                           </Button>
                         </td>
                         <td className="p-3">
-                          <Button variant="ghost" size="sm" className="p-0 h-auto">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button variant="ghost" size="sm" className="p-0 h-auto">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-40 p-2">
+                              <Link href={`/dashboard/rooms/edit/${room.id}`}>
+                                <Button variant="ghost" size="sm" className="w-full justify-start px-2 py-1.5 text-sm">
+                                  <Pencil className="mr-2 h-4 w-4" />
+                                  Edit
+                                </Button>
+                              </Link>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="w-full justify-start px-2 py-1.5 text-sm text-red-600 hover:text-red-700"
+                                onClick={() => console.log(`Delete room ${room.id}`)} // Add delete functionality here
+                              >
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Delete
+                              </Button>
+                            </PopoverContent>
+                          </Popover>
                         </td>
                       </tr>
                     ))}
